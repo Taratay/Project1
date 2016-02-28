@@ -1,19 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        List<string> data = new List<string>();
-
         public Form1()
         {
             InitializeComponent();
@@ -21,12 +14,10 @@ namespace WindowsFormsApplication1
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -43,25 +34,26 @@ namespace WindowsFormsApplication1
                 for (int j = 0; j < y; j++, index++)
                     A1[i, j] = parseElement(index);
 
-            double min = A1[x, 0];
+            double min = A1[x - 1, 0];
             int position = 0;
             for (int i = 1; i < y; i++)
+                if (min > A1[x - 1, i])
+                {
+                    min = A1[x - 1, i];
+                    position = i;
+                }
+
+            for (int i = 0; i < x; i++)
+                A1[i, y - 1] = A1[i, y - 1] / A1[i, position];
+
+            min = A1[x, y];
+            position = 0;
+            for (int i = 0; i < x; i++)
                 if (min > A1[x, i])
                 {
                     min = A1[x, i];
                     position = i;
                 }
-            
-            for (int i = 0; i < x; i++)
-                A1[i, y] = A1[i, y] / A1[i, position];
-            double min_strap = A1[x,y] ;
-            int posmin = 0;
-            for (int i = 0;i<x;i++)
-         if(min_strap>A1[y, i])
-         {
-             min_strap = A1[x, i];
-             posmin = i;
-         }
         }
 
         private double parseElement(int index)
@@ -71,13 +63,11 @@ namespace WindowsFormsApplication1
 
         private List<string> parseLine()
         {
-            data = EnterBox.Text.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries).ToList();
             return EnterBox.Text.Split(new[] { ' ', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
-
         }
     }
 }
